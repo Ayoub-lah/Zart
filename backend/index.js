@@ -1,30 +1,40 @@
+// backend/index.js - VERSION CORRIGÉE COMPLÈTE
+
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 require('dotenv').config();
 
-// Import des routes
 const apiRoutes = require('./api');
 const contactRoutes = require('./contact');
-const adminRoutes = require('./routes/admin'); // Nouvelle route sans MongoDB
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Configuration CORS
+// ✅ SOLUTION 1 : CORS OUVERT POUR TOUT (RECOMMANDÉ POUR DÉPANNAGE)
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5000', 'https://zartissam.com','https://www.zartissam.com' ],
+  origin: '*',  // ← ACCEPTE TOUTES LES ORIGINES
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   credentials: true
 }));
 
-// Middleware de logging
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} ${req.method} ${req.url}`);
-  next();
-});
+/* 
+// ✅ SOLUTION 2 : CORS SPÉCIFIQUE (À UTILISER APRÈS)
+app.use(cors({
+  origin: [
+    'https://zartissam.com',
+    'https://www.zartissam.com',
+    'http://localhost:3000'
+  ],
+  credentials: true
+}));
+*/
+
+// ✅ MIDDLEWARE POUR LES PREFLIGHT REQUESTS
+app.options('*', cors());
 
 // Middleware
 app.use(express.json());
@@ -33,136 +43,99 @@ app.use(express.urlencoded({ extended: true }));
 // Servir les fichiers statiques
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Créer les dossiers nécessaires
-const ensureDirectories = () => {
-  const directories = [
-    'data',
-    'uploads',
-    'uploads/logos',
-    'uploads/files'
-  ];
+// ✅ MIDDLEWARE POUR AJOUTER LES HEADERS MANUELLEMENT (BACKUP)
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  
+  next();
+});
 
-  directories.forEach(dir => {
-    const dirPath = path.join(__dirname, dir);
-    if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath, { recursive: true });
-      console.log(`📁 Dossier créé: ${dir}`);
-    }
-  });
-};
+// ✅ MIDDLEWARE POUR NETTOYER LES DOUBLES SLASH
+app.use((req, res, next) => {
+  // Si l'URL commence par //, enlever un slash
+  if (req.url.startsWith('//')) {
+    req.url = req.url.substring(1);
+    console.log(`🔄 URL corrigée: ${req.url}`);
+  }
+  next();
+});
 
 // Routes principales
 app.use('/api', apiRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/admin', adminRoutes);
 
-// Dans backend/index.js, après les autres routes
-// Route publique pour récupérer les projets vijing (sans authentification)
+// ✅ ROUTES PUBLIQUES CORRIGÉES
 app.get('/api/public/vijing', (req, res) => {
   try {
     console.log('📡 Route /api/public/vijing appelée');
     
-    const vijingDataPath = path.join(__dirname, 'data', 'vijing.json');
+    const vijingPath = path.join(__dirname, 'data', 'vijing.json');
     
-    if (!fs.existsSync(vijingDataPath)) {
-      console.log('❌ Fichier vijing.json non trouvé');
-      return res.json({
-        success: true,
-        vijingProjects: []
-      });
+    if (!fs.existsSync(vijingPath)) {
+      return res.json({ success: true, vijingProjects: [] });
     }
     
-    const data = fs.readFileSync(vijingDataPath, 'utf8');
-    let vijingProjects;
+    const data = fs.readFileSync(vijingPath, 'utf8');
+    let vijingProjects = JSON.parse(data);
     
-    try {
-      vijingProjects = JSON.parse(data);
-      console.log(`📊 ${vijingProjects.length} projets chargés`);
-    } catch (parseError) {
-      console.error('❌ Erreur parsing JSON:', parseError);
-      vijingProjects = [];
-    }
-    
-    // Filtrer seulement les projets actifs
+    // Filtrer projets actifs
     const activeProjects = Array.isArray(vijingProjects) 
-      ? vijingProjects.filter(project => project.isActive !== false)
+      ? vijingProjects.filter(p => p.isActive !== false)
       : [];
     
-    // Trier par ordre
-    const sortedProjects = activeProjects.sort((a, b) => (a.order || 0) - (b.order || 0));
-    
-    res.json({
-      success: true,
-      vijingProjects: sortedProjects
-    });
+    res.json({ success: true, vijingProjects: activeProjects });
     
   } catch (error) {
-    console.error('❌ Erreur route publique vijing:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Erreur de chargement des projets vijing',
-      message: error.message
-    });
+    console.error('❌ Erreur:', error);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
-// Route publique pour récupérer les visual albums
 app.get('/api/public/visual-albums', (req, res) => {
   try {
     console.log('📡 Route /api/public/visual-albums appelée');
     
-    const albumsDataPath = path.join(__dirname, 'data', 'visual-albums.json');
+    const albumsPath = path.join(__dirname, 'data', 'visual-albums.json');
     
-    if (!fs.existsSync(albumsDataPath)) {
-      console.log('❌ Fichier visual-albums.json non trouvé');
-      return res.json({
-        success: true,
-        albums: []
-      });
+    if (!fs.existsSync(albumsPath)) {
+      return res.json({ success: true, albums: [] });
     }
     
-    const data = fs.readFileSync(albumsDataPath, 'utf8');
-    let albums;
+    const data = fs.readFileSync(albumsPath, 'utf8');
+    let albums = JSON.parse(data);
     
-    try {
-      albums = JSON.parse(data);
-      console.log(`📊 ${albums.length} albums chargés`);
-    } catch (parseError) {
-      console.error('❌ Erreur parsing JSON:', parseError);
-      albums = [];
-    }
-    
-    // Filtrer seulement les albums actifs
     const activeAlbums = Array.isArray(albums) 
-      ? albums.filter(album => album.isActive !== false)
+      ? albums.filter(a => a.isActive !== false)
       : [];
     
-    // Trier par ordre
-    const sortedAlbums = activeAlbums.sort((a, b) => (a.order || 0) - (b.order || 0));
-    
-    res.json({
-      success: true,
-      albums: sortedAlbums
-    });
+    res.json({ success: true, albums: activeAlbums });
     
   } catch (error) {
-    console.error('❌ Erreur route publique visual albums:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Erreur de chargement des visual albums',
-      message: error.message
-    });
+    console.error('❌ Erreur:', error);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
-// Route pour obtenir les logos partenaires (version simplifiée)
 app.get('/api/partner-logos', (req, res) => {
   try {
-    const logoFiles = fs.readdirSync(path.join(__dirname, 'uploads/logos'));
+    const logosDir = path.join(__dirname, 'uploads', 'logos');
     
-    const baseUrl = process.env.BASE_URL || `http://localhost:${PORT}`;
+    if (!fs.existsSync(logosDir)) {
+      return res.json({ success: true, logos: [] });
+    }
     
-    const logos = logoFiles
+    const files = fs.readdirSync(logosDir);
+    const baseUrl = process.env.BASE_URL || `https://zart.onrender.com`;
+    
+    const logos = files
       .filter(file => /\.(jpg|jpeg|png|svg|webp)$/i.test(file))
       .map((file, index) => ({
         id: index + 1,
@@ -174,17 +147,11 @@ app.get('/api/partner-logos', (req, res) => {
         order: index
       }));
 
-    res.json({
-      success: true,
-      logos
-    });
-
+    res.json({ success: true, logos });
+    
   } catch (error) {
-    console.error('Erreur logos partenaires:', error);
-    res.json({
-      success: true,
-      logos: []
-    });
+    console.error('❌ Erreur logos:', error);
+    res.json({ success: true, logos: [] });
   }
 });
 
@@ -194,12 +161,8 @@ app.get('/api/health', (req, res) => {
     status: 'OK', 
     message: 'Serveur fonctionnel',
     timestamp: new Date().toISOString(),
-    services: {
-      upload: true,
-      contact: true,
-      download: true,
-      admin: true
-    }
+    cors: 'enabled',
+    baseUrl: process.env.BASE_URL || 'https://zart.onrender.com'
   });
 });
 
@@ -208,71 +171,57 @@ app.get('/', (req, res) => {
   res.json({
     name: 'Portfolio Backend API',
     version: '2.0.0',
-    description: 'Système sans MongoDB - Stockage fichiers JSON',
+    description: 'Backend pour portfolio',
     endpoints: {
-      upload: 'POST /api/upload',
-      contact: 'POST /api/contact/send',
-      download: 'GET /api/download/:id',
+      health: 'GET /api/health',
       admin: 'POST /api/admin/login',
-      logos: 'GET /api/partner-logos',
-      health: 'GET /api/health'
+      public: {
+        designs: 'GET /api/admin/public/designs',
+        vijing: 'GET /api/public/vijing',
+        albums: 'GET /api/public/visual-albums',
+        logos: 'GET /api/partner-logos'
+      }
     }
   });
 });
 
-// Gestion des erreurs 404
+// Gestion 404
 app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    error: 'Route non trouvée'
-  });
+  res.status(404).json({ success: false, error: 'Route non trouvée' });
 });
 
-// Gestion des erreurs globales
+// Gestion erreurs
 app.use((err, req, res, next) => {
-  console.error('Erreur serveur:', err);
+  console.error('❌ Erreur serveur:', err);
   res.status(500).json({
     success: false,
-    error: 'Erreur interne du serveur',
+    error: 'Erreur interne',
     message: process.env.NODE_ENV === 'development' ? err.message : undefined
   });
 });
 
-// Middleware de logging détaillé
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} ${req.method} ${req.url}`);
-  console.log('Headers:', req.headers);
-  console.log('Body:', req.body);
-  next();
-});
-
-app.use('/uploads/vijing', express.static(path.join(__dirname, 'uploads/vijing')));
+// Création des dossiers
+const createFolders = () => {
+  const dirs = [
+    'data', 'uploads', 'uploads/logos', 'uploads/designs',
+    'uploads/vijing', 'uploads/visual-albums', 'uploads/files'
+  ];
+  
+  dirs.forEach(dir => {
+    const dirPath = path.join(__dirname, dir);
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true });
+    }
+  });
+};
 
 // Démarrer le serveur
+createFolders();
+
 app.listen(PORT, () => {
-  // Créer les dossiers nécessaires
-  ensureDirectories();
-  
   console.log('='.repeat(60));
-  console.log(`🚀 Serveur backend lancé sur http://localhost:${PORT}`);
-  console.log(`📧 Email configuré: ${process.env.EMAIL_USER || 'Non configuré'}`);
-  console.log(`🔐 JWT Secret: ${process.env.JWT_SECRET ? '✓' : '✗ (utilise la valeur par défaut)'}`);
-  console.log(`📁 Dossier data: ${path.join(__dirname, 'data')}`);
-  console.log(`📁 Dossier uploads: ${path.join(__dirname, 'uploads')}`);
-  console.log('='.repeat(60));
-  console.log('🎯 Stockage: Fichiers JSON (pas de MongoDB requis)');
-  console.log('👑 Admin par défaut: admin / admin123');
-  console.log('⚠️  Changez le mot de passe admin après la première connexion!');
-  console.log('='.repeat(60));
-  
-  console.log('\n📋 Endpoints disponibles:');
-  console.log(`  • http://localhost:${PORT}/api/health`);
-  console.log(`  • http://localhost:${PORT}/api/admin/login`);
-  console.log(`  • http://localhost:${PORT}/api/partner-logos`);
-  console.log(`  • http://localhost:${PORT}/api/contact/send`);
-  console.log(`  • http://localhost:${PORT}/api/upload`);
-  console.log('='.repeat(60));
-  console.log('💻 Frontend: http://localhost:3000');
-  console.log('🔐 Admin: http://localhost:3000/admin/login');
+  console.log(`🚀 Backend démarré sur port ${PORT}`);
+  console.log(`🌐 URL: https://zart.onrender.com`);
+  console.log(`🔐 CORS: * (ouvert)`);
   console.log('='.repeat(60));
 });

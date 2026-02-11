@@ -169,30 +169,18 @@ useEffect(() => {
 
 const fetchVisualAlbums = async () => {
   try {
-    const API_BASE_URL = process.env.REACT_APP_API_URL ;
-    const url = `${API_BASE_URL}/api/public/visual-albums`;
+    const response = await fetch(`${API_BASE_URL}/api/public/visual-albums`);
     
-    console.log('🔄 Chargement Visual Albums depuis:', url);
-    
-    const response = await fetch(url);
-    
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
     
     const data = await response.json();
-    console.log('✅ Visual Albums data:', data);
-
-    if (data.success && data.albums) {
-      setVisualAlbums(data.albums);
-    } else {
-      setVisualAlbums([]);
+    
+    if (data.success) {
+      setVisualAlbums(data.albums || []);
     }
   } catch (error) {
-    console.error('❌ Erreur Visual Albums:', error);
+    console.error('❌ Erreur Albums:', error);
     setVisualAlbums([]);
-  } finally {
-    setLoadingVisualAlbums(false);
   }
 };
 
@@ -216,54 +204,43 @@ useEffect(() => {
 
 
 
- const fetchDesigns = async () => {
-    try {
-      const API_BASE_URL = process.env.REACT_APP_API_URL;
-      
-      console.log('🔄 Chargement des designs...');
-      
-      const response = await fetch(`${API_BASE_URL}/api/admin/public/designs`);
-      const data = await response.json();
-      
-      console.log('✅ Données reçues:', data);
-
-      if (data.success && data.designs) {
-        setDesignsData(data.designs);
-      } else {
-        console.error('❌ Format invalide:', data);
-      }
-    } catch (error) {
-      console.error('❌ Erreur fetch designs:', error);
+const fetchDesigns = async () => {
+  try {
+    // ❌ ACTUEL (ERREUR)
+    // `${API_BASE_URL}/api/admin/public/designs`
+    
+    // ✅ CORRIGÉ
+    const response = await fetch(`${API_BASE_URL}/api/admin/public/designs`);
+    // OU ALTERNATIVEMENT (si vous avez ajouté la route dans index.js)
+    // const response = await fetch(`${API_BASE_URL}/api/public/designs`);
+    
+    const data = await response.json();
+    console.log('✅ Designs chargés:', data);
+    
+    if (data.success) {
+      setDesignsData(data.designs);
     }
-  };
+  } catch (error) {
+    console.error('❌ Erreur designs:', error);
+  }
+};
 
 const fetchVijingProjects = async () => {
   try {
-    const API_BASE_URL = process.env.REACT_APP_API_URL;
-    // Utiliser le endpoint public (sans /admin/)
-    const url = `${API_BASE_URL}/api/public/vijing`;
+    // ❌ ACTUEL: https://zart.onrender.com//api/public/vijing
+    // ✅ CORRIGÉ: https://zart.onrender.com/api/public/vijing
+    const response = await fetch(`${API_BASE_URL}/api/public/vijing`);
     
-    console.log('🔄 Chargement VJing depuis:', url);
-    
-    const response = await fetch(url);
-    
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
     
     const data = await response.json();
-    console.log('✅ VJing data:', data);
-
-    if (data.success && data.vijingProjects) {
-      setVijingProjects(data.vijingProjects);
-    } else {
-      setVijingProjects([]);
+    
+    if (data.success) {
+      setVijingProjects(data.vijingProjects || []);
     }
   } catch (error) {
     console.error('❌ Erreur VJing:', error);
     setVijingProjects([]);
-  } finally {
-    setLoadingVijing(false);
   }
 };
 
@@ -341,11 +318,13 @@ useEffect(() => {
 // Dans ton Home.jsx - fonction handleSubmit améliorée
 const handleSubmit = async (e) => {
   e.preventDefault();
-  console.log('🔄 Début de la soumission...', formData);
+  console.log('🔄 Soumission formulaire...');
   setIsSubmitting(true);
 
   try {
-    const response = await fetch('http://localhost:5000/api/contact/send', {
+    // ❌ ACTUEL: http://localhost:5000
+    // ✅ CORRIGÉ: Utiliser API_BASE_URL
+    const response = await fetch(`${API_BASE_URL}/api/contact/send`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -353,13 +332,10 @@ const handleSubmit = async (e) => {
       body: JSON.stringify(formData),
     });
 
-    console.log('📤 Réponse reçue:', response.status);
-    
     const data = await response.json();
-    console.log('📦 Données:', data);
 
     if (data.success) {
-      alert('✅ Message envoyé avec succès ! Je te répondrai dans les 24h.');
+      toast.success('✅ Message envoyé avec succès !');
       setFormData({
         firstName: '',
         lastName: '',
@@ -369,28 +345,13 @@ const handleSubmit = async (e) => {
         message: ''
       });
     } else {
-      console.error('Erreur serveur:', data.message);
-      alert(`❌ Erreur: ${data.message || 'Erreur d\'envoi'}`);
+      toast.error(data.message || '❌ Erreur d\'envoi');
     }
   } catch (error) {
-    console.error('❌ Erreur réseau:', error);
-    
-    // Fallback au mailto
-    const mailtoBody = `
-Nom: ${formData.firstName} ${formData.lastName}
-Email: ${formData.email}
-Téléphone: ${formData.phone}
-Service: ${formData.service}
-
-Message:
-${formData.message}
-    `.trim();
-    
-    window.location.href = `mailto:contactzartissam@gmail.com?subject=Contact Portfolio&body=${encodeURIComponent(mailtoBody)}`;
-    
+    console.error('❌ Erreur:', error);
+    toast.error('❌ Erreur de connexion au serveur');
   } finally {
     setIsSubmitting(false);
-    console.log('🏁 Soumission terminée');
   }
 };
     
@@ -533,17 +494,18 @@ useEffect(() => {
 
 const fetchPartnerLogos = async () => {
   try {
-    const API_BASE_URL = process.env.REACT_APP_API_URL;
     const response = await fetch(`${API_BASE_URL}/api/partner-logos`);
+    
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    
     const data = await response.json();
     
-    if (data.success && data.logos) {
-      setPartnerLogos(data.logos);
+    if (data.success) {
+      setPartnerLogos(data.logos || []);
     }
   } catch (error) {
-    console.error('Erreur chargement logos:', error);
-  } finally {
-    setLogosLoading(false);
+    console.error('❌ Erreur Logos:', error);
+    setPartnerLogos([]);
   }
 };
 
