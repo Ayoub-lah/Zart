@@ -1311,7 +1311,6 @@ const Portfolio = () => {
         </>
       )}
 
-      <Footer />
 
       <style jsx>{`
         @keyframes fadeInUp {
