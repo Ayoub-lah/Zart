@@ -169,7 +169,7 @@ useEffect(() => {
 
 const fetchVisualAlbums = async () => {
   try {
-    const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+    const API_BASE_URL = process.env.REACT_APP_API_URL ;
     const url = `${API_BASE_URL}/api/public/visual-albums`;
     
     console.log('🔄 Chargement Visual Albums depuis:', url);
@@ -218,7 +218,7 @@ useEffect(() => {
 
  const fetchDesigns = async () => {
     try {
-      const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const API_BASE_URL = process.env.REACT_APP_API_URL;
       
       console.log('🔄 Chargement des designs...');
       
@@ -239,7 +239,7 @@ useEffect(() => {
 
 const fetchVijingProjects = async () => {
   try {
-    const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+    const API_BASE_URL = process.env.REACT_APP_API_URL;
     // Utiliser le endpoint public (sans /admin/)
     const url = `${API_BASE_URL}/api/public/vijing`;
     
@@ -533,7 +533,7 @@ useEffect(() => {
 
 const fetchPartnerLogos = async () => {
   try {
-    const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+    const API_BASE_URL = process.env.REACT_APP_API_URL;
     const response = await fetch(`${API_BASE_URL}/api/partner-logos`);
     const data = await response.json();
     

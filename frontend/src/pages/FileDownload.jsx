@@ -38,7 +38,7 @@ const FileDownload = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // ✅ FIXED: Remove /api from base URL since we add it in each API call
-  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_URL ;
   
 
   // Extract ID from link

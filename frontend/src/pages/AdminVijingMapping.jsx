@@ -50,7 +50,7 @@ const AdminVijingMapping = () => {
     'Festival Visuals'
   ];
 
-  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_URL;
 
   // Vérifier l'authentification - MÊME LOGIQUE QUE AdminLogos
   useEffect(() => {

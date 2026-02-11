@@ -32,7 +32,7 @@ const Portfolio = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   // URLs API
-  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_URL ;
 
   // Détecter la taille de l'écran pour mobile
   useEffect(() => {

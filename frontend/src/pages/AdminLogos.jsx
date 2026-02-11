@@ -53,7 +53,7 @@ const AdminLogos = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [bulkSelection, setBulkSelection] = useState([]);
 
-  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_URL;
 
   // Vérifier l'authentification
   useEffect(() => {

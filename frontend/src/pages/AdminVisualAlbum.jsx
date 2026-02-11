@@ -79,7 +79,7 @@ const AdminVisualAlbum = () => {
   const [editMode, setEditMode] = useState(false);
   const [editingAlbum, setEditingAlbum] = useState(null);
 
-  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_URL;
 
   // Types d'albums avec icônes
   const albumTypeOptions = [
