@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { FiLock, FiUser, FiEye, FiEyeOff } from 'react-icons/fi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import API_BASE_URL from '../config/api';
+
 
 const AdminLogin = () => {
   const [username, setUsername] = useState('');
@@ -11,7 +13,6 @@ const AdminLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const API_BASE_URL = process.env.REACT_APP_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();

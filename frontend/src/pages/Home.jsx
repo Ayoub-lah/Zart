@@ -1,19 +1,21 @@
-  import React, { useState, useEffect, useRef } from 'react'
-  import data from '../data.json';
-  import Scrollbar from 'smooth-scrollbar';
-  import { HiGlobe, HiPencilAlt, HiDeviceMobile, HiShoppingCart, HiPaperAirplane, HiStar, HiLockClosed, HiLightningBolt, HiLightBulb } from 'react-icons/hi';
-  import { FaRegSmile, FaSmile, FaRegImage, FaFlag, FaBookOpen, FaInstagram, FaRegGem, FaRegFolderOpen } from 'react-icons/fa';
-  import { Link } from 'react-router-dom';
-  import VideoCard from '../components/VideoCard';
-  import Footer from '../components/Footer';
-
-  import { 
-  // Vos imports existants
+import React, { useState, useEffect, useRef } from 'react';
+import data from '../data.json';
+import Scrollbar from 'smooth-scrollbar';
+import { 
+  HiGlobe, HiPencilAlt, HiDeviceMobile, HiShoppingCart, 
+  HiPaperAirplane, HiStar, HiLockClosed, HiLightningBolt, HiLightBulb 
+} from 'react-icons/hi';
+import { 
+  FaRegSmile, FaSmile, FaRegImage, FaFlag, FaBookOpen, 
+  FaInstagram, FaRegGem, FaRegFolderOpen 
+} from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import VideoCard from '../components/VideoCard';
+import Footer from '../components/Footer';
+import { 
   FiZap, FiRefreshCw, FiMonitor, FiGlobe, FiLayout, FiImage, FiExternalLink, 
   FiFilm, FiYoutube, FiVideo, FiCpu, FiMessageCircle, FiAperture, 
   FiShoppingCart, FiBookOpen, FiBriefcase, FiFileText, FiTag, FiPlay,
-  
-  // AJOUTEZ CES NOUVELLES ICÔNES :
   FiCreditCard, FiPackage, FiBook, FiAward, FiShare2, FiFlag, FiStar,
   FiFeather, FiType, FiMessageSquare, FiSend, FiBox, FiHome, FiUser,
   FiMail, FiPhone, FiMapPin, FiCamera, FiMusic, FiHeart, FiSettings,
@@ -21,121 +23,55 @@
   FiCalendar, FiClock, FiDollarSign, FiShoppingBag, FiBarChart, FiPieChart,
   FiTrendingUp, FiDownload, FiUpload, FiPrinter, FiHardDrive, FiServer,
   FiCode, FiGitBranch, FiGitCommit, FiGitPullRequest, FiTerminal
-  } from 'react-icons/fi';
-  // Ajoutez cette ligne avec les autres imports
-  import AnimatedCounter from '../components/AnimatedCounter'; // Ajustez le chemin selon votre structure
+} from 'react-icons/fi';
+import AnimatedCounter from '../components/AnimatedCounter';
 
-  // Icon mapping for dynamic rendering
+// ✅ IMPORTATION DE L'URL DE BASE
+import API_BASE_URL from '../config/api';
+
+// ✅ IMPORTATION DE TOAST
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+// Icon mapping for dynamic rendering
 const fiIcons = {
-  // Icônes existantes
-  FiMonitor,
-  FiGlobe,
-  FiLayout,
-  FiImage,
-  FiExternalLink,
-  FiFilm,
-  FiYoutube,
-  FiVideo,
-  FiCpu,
-  FiMessageCircle,
-  FiAperture,
-  FiShoppingCart,
-  FiBookOpen,
-  FiBriefcase,
-  FiFileText,
-  FiTag,
-  FiPlay,
-  FiZap,
-  
-  // Nouvelles icônes ajoutées
-  FiCreditCard,
-  FiPackage,
-  FiBook,
-  FiAward,
-  FiShare2,
-  FiFlag,
-  FiStar,
-  FiRefreshCw,
-  FiFeather,
-  FiType,
-  FiMessageSquare,
-  FiSend,
-  FiBox,
-  FiHome,
-  FiUser,
-  FiMail,
-  FiPhone,
-  FiMapPin,
-  FiCamera,
-  FiMusic,
-  FiHeart,
-  FiSettings,
-  FiTool,
-  FiDatabase,
-  FiCloud,
-  FiWifi,
-  FiBluetooth,
-  FiBattery,
-  FiBell,
-  FiCalendar,
-  FiClock,
-  FiDollarSign,
-  FiShoppingBag,
-  FiBarChart,
-  FiPieChart,
-  FiTrendingUp,
-  FiDownload,
-  FiUpload,
-  FiPrinter,
-  FiHardDrive,
-  FiServer,
-  FiCode,
-  FiGitBranch,
-  FiGitCommit,
-  FiGitPullRequest,
-  FiTerminal
+  FiMonitor, FiGlobe, FiLayout, FiImage, FiExternalLink,
+  FiFilm, FiYoutube, FiVideo, FiCpu, FiMessageCircle,
+  FiAperture, FiShoppingCart, FiBookOpen, FiBriefcase,
+  FiFileText, FiTag, FiPlay, FiZap, FiCreditCard,
+  FiPackage, FiBook, FiAward, FiShare2, FiFlag, FiStar,
+  FiRefreshCw, FiFeather, FiType, FiMessageSquare,
+  FiSend, FiBox, FiHome, FiUser, FiMail, FiPhone,
+  FiMapPin, FiCamera, FiMusic, FiHeart, FiSettings,
+  FiTool, FiDatabase, FiCloud, FiWifi, FiBluetooth,
+  FiBattery, FiBell, FiCalendar, FiClock, FiDollarSign,
+  FiShoppingBag, FiBarChart, FiPieChart, FiTrendingUp,
+  FiDownload, FiUpload, FiPrinter, FiHardDrive, FiServer,
+  FiCode, FiGitBranch, FiGitCommit, FiGitPullRequest, FiTerminal
 };
 
 const Home = () => {
-    const [loading, setLoading] = useState(true);
-    const [progress, setProgress] = useState(0);
-    const [scrollY, setScrollY] = useState(0)
-    const scrollbarRef = useRef(null)
-    const [cubeRotation, setCubeRotation] = useState({ x: -20, y: 30 });
-    const [draggingCube, setDraggingCube] = useState(false);
-    const lastCubePos = useRef({ x: 0, y: 0 });
-    const [clickGlow, setClickGlow] = useState(false);
-    const [showContent, setShowContent] = useState(false); // ← AJOUTER CETTE LIGNE
-    const [bubble, setBubble] = useState({ x: 175, y: 175, vx: 1.1, vy: 0.8, r: 70 });
-    const bubbleBoxRef = useRef(null);
-    const bubbleAnimRef = useRef();
-    const [mouse, setMouse] = useState({ x: 0, y: 0, inside: false });
-    const [cubeClickEffect, setCubeClickEffect] = useState(false);
-    const [partnerLogos, setPartnerLogos] = useState([]);
-    const [logosLoading, setLogosLoading] = useState(true);
-    const [vijingProjects, setVijingProjects] = useState([]);
-    const [loadingVijing, setLoadingVijing] = useState(true);
-   
-    // Ajoutez avec les autres états
-const [visualAlbums, setVisualAlbums] = useState([]);
-const [loadingVisualAlbums, setLoadingVisualAlbums] = useState(true);
-  
-    
-
-    // Fonction pour naviguer vers le portfolio avec une catégorie spécifique
-  const navigateToPortfolio = (category) => {
-  // Utiliser l'API History pour changer l'URL sans recharger
-  window.history.pushState(null, '', `/portfolio#${category}`);
-    window.location.href = `/portfolio?category=${category}`;
-
-  // Déclencher un événement personnalisé pour notifier le changement d'URL
-  window.dispatchEvent(new PopStateEvent('popstate'));
-  
-  // Optionnel: Forcer le rechargement si nécessaire
-  // window.location.href = `/portfolio#${category}`;
-};
-
- const [designsData, setDesignsData] = useState({
+  const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
+  const [scrollY, setScrollY] = useState(0);
+  const scrollbarRef = useRef(null);
+  const [cubeRotation, setCubeRotation] = useState({ x: -20, y: 30 });
+  const [draggingCube, setDraggingCube] = useState(false);
+  const lastCubePos = useRef({ x: 0, y: 0 });
+  const [clickGlow, setClickGlow] = useState(false);
+  const [showContent, setShowContent] = useState(false);
+  const [bubble, setBubble] = useState({ x: 175, y: 175, vx: 1.1, vy: 0.8, r: 70 });
+  const bubbleBoxRef = useRef(null);
+  const bubbleAnimRef = useRef();
+  const [mouse, setMouse] = useState({ x: 0, y: 0, inside: false });
+  const [cubeClickEffect, setCubeClickEffect] = useState(false);
+  const [partnerLogos, setPartnerLogos] = useState([]);
+  const [logosLoading, setLogosLoading] = useState(true);
+  const [vijingProjects, setVijingProjects] = useState([]);
+  const [loadingVijing, setLoadingVijing] = useState(true);
+  const [visualAlbums, setVisualAlbums] = useState([]);
+  const [loadingVisualAlbums, setLoadingVisualAlbums] = useState(true);
+  const [designsData, setDesignsData] = useState({
     posters: [],
     banners: [],
     brochures: [],
@@ -144,370 +80,254 @@ const [loadingVisualAlbums, setLoadingVisualAlbums] = useState(true);
     brands: []
   });
   const [loadingDesigns, setLoadingDesigns] = useState(true);
-
-
-    // Ajoutez ces états avec les autres useState
-const [formData, setFormData] = useState({
-  firstName: '',
-  lastName: '',
-  email: '',
-  phone: '',
-  service: '',
-  message: ''
-});
-const [isSubmitting, setIsSubmitting] = useState(false);
-
-// État pour les designs
-
-useEffect(() => {
-  console.log('🏁 useEffect - Chargement des données');
-  fetchDesigns();
-  fetchVijingProjects();
-  fetchPartnerLogos();
-  fetchVisualAlbums(); // ← AJOUTER CETTE LIGNE
-}, []);
-
-const fetchVisualAlbums = async () => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/public/visual-albums`);
-    
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    
-    const data = await response.json();
-    
-    if (data.success) {
-      setVisualAlbums(data.albums || []);
-    }
-  } catch (error) {
-    console.error('❌ Erreur Albums:', error);
-    setVisualAlbums([]);
-  }
-};
-
-useEffect(() => {
-  console.log('🔍 État actuel de vijingProjects:', {
-    count: vijingProjects.length,
-    projects: vijingProjects,
-    loading: loadingVijing
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    service: '',
+    message: ''
   });
-}, [vijingProjects, loadingVijing]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Fonction pour naviguer vers le portfolio avec une catégorie spécifique
+  const navigateToPortfolio = (category) => {
+    window.location.href = `/portfolio?category=${category}`;
+  };
 
+  // ==================== FETCH DES DONNÉES ====================
 
-// Ajoutez aussi un useEffect pour surveiller les changements
-useEffect(() => {
-  console.log('📊 vijingProjects mis à jour:', {
-    count: vijingProjects.length,
-    data: vijingProjects
-  });
-}, [vijingProjects]);
-
-
-
-const fetchDesigns = async () => {
-  try {
-    // ❌ ACTUEL (ERREUR)
-    // `${API_BASE_URL}/api/admin/public/designs`
-    
-    // ✅ CORRIGÉ
-    const response = await fetch(`${API_BASE_URL}/api/admin/public/designs`);
-    // OU ALTERNATIVEMENT (si vous avez ajouté la route dans index.js)
-    // const response = await fetch(`${API_BASE_URL}/api/public/designs`);
-    
-    const data = await response.json();
-    console.log('✅ Designs chargés:', data);
-    
-    if (data.success) {
-      setDesignsData(data.designs);
-    }
-  } catch (error) {
-    console.error('❌ Erreur designs:', error);
-  }
-};
-
-const fetchVijingProjects = async () => {
-  try {
-    // ❌ ACTUEL: https://zart.onrender.com//api/public/vijing
-    // ✅ CORRIGÉ: https://zart.onrender.com/api/public/vijing
-    const response = await fetch(`${API_BASE_URL}/api/public/vijing`);
-    
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    
-    const data = await response.json();
-    
-    if (data.success) {
-      setVijingProjects(data.vijingProjects || []);
-    }
-  } catch (error) {
-    console.error('❌ Erreur VJing:', error);
-    setVijingProjects([]);
-  }
-};
-
-
-
-// Ajoutez cette fonction pour tester les URLs d'images
-const testImageUrls = async () => {
-  if (vijingProjects.length > 0) {
-    console.log('🧪 Test des URLs d\'images...');
-    
-    for (const project of vijingProjects.slice(0, 2)) {
-      if (project.image) {
-        console.log(`Test image: ${project.image}`);
-        
-        // Créer une image pour tester
-        const img = new Image();
-        img.onload = () => console.log(`✅ Image chargée: ${project.image}`);
-        img.onerror = () => console.error(`❌ Erreur image: ${project.image}`);
-        img.src = project.image;
+  // ✅ DESIGNS
+  const fetchDesigns = async () => {
+    try {
+      console.log('🔄 Chargement designs...');
+      const response = await fetch(`${API_BASE_URL}/api/admin/public/designs`);
+      
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      
+      const data = await response.json();
+      console.log('✅ Designs chargés:', data);
+      
+      if (data.success) {
+        setDesignsData(data.designs);
       }
+    } catch (error) {
+      console.error('❌ Erreur designs:', error);
+    } finally {
+      setLoadingDesigns(false);
     }
-  }
-};
+  };
 
-// Appelez après que les projets sont chargés
-useEffect(() => {
-  if (vijingProjects.length > 0) {
-    testImageUrls();
-  }
-}, [vijingProjects]);
-
- const designCategories = [
-    { 
-      key: 'posters', 
-      name: 'Posters', 
-      data: designsData.posters, 
-      icon: <FaRegImage className="text-white text-lg" /> 
-    },
-    { 
-      key: 'banners', 
-      name: 'Banners', 
-      data: designsData.banners, 
-      icon: <FaFlag className="text-white text-lg" /> 
-    },
-    { 
-      key: 'brochures', 
-      name: 'Brochure & Flyers', 
-      data: designsData.brochures, 
-      icon: <FaBookOpen className="text-white text-lg" /> 
-    },
-    { 
-      key: 'posts', 
-      name: 'Post Designs', 
-      data: designsData.posts, 
-      icon: <FaInstagram className="text-white text-lg" /> 
-    },
-    { 
-      key: 'logos', 
-      name: 'Logo Designs', 
-      data: designsData.logos, 
-      icon: <FaRegGem className="text-white text-lg" /> 
-    },
-    { 
-      key: 'brands', 
-      name: 'Brand Guidelines', 
-      data: designsData.brands, 
-      icon: <FaRegFolderOpen className="text-white text-lg" /> 
-    },
-  ];
-
-
-
-
-// Fonction de soumission du formulaire
-// Dans ton Home.jsx - fonction handleSubmit améliorée
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  console.log('🔄 Soumission formulaire...');
-  setIsSubmitting(true);
-
-  try {
-    // ❌ ACTUEL: http://localhost:5000
-    // ✅ CORRIGÉ: Utiliser API_BASE_URL
-    const response = await fetch(`${API_BASE_URL}/api/contact/send`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      toast.success('✅ Message envoyé avec succès !');
-      setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        service: '',
-        message: ''
-      });
-    } else {
-      toast.error(data.message || '❌ Erreur d\'envoi');
+  // ✅ VIJING
+  const fetchVijingProjects = async () => {
+    try {
+      console.log('🔄 Chargement VJing...');
+      const response = await fetch(`${API_BASE_URL}/api/public/vijing`);
+      
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      
+      const data = await response.json();
+      console.log('✅ VJing chargés:', data);
+      
+      if (data.success) {
+        setVijingProjects(data.vijingProjects || []);
+      }
+    } catch (error) {
+      console.error('❌ Erreur VJing:', error);
+      setVijingProjects([]);
+    } finally {
+      setLoadingVijing(false);
     }
-  } catch (error) {
-    console.error('❌ Erreur:', error);
-    toast.error('❌ Erreur de connexion au serveur');
-  } finally {
-    setIsSubmitting(false);
-  }
-};
-    
+  };
 
-// Vérifier si c'est le premier chargement de la session
-useEffect(() => {
-  const hasSeenLoading = sessionStorage.getItem('hasSeenLoading');
-  
-  if (hasSeenLoading === 'true') {
-    // Si l'utilisateur a déjà vu l'écran de chargement dans cette session
-    setLoading(false);
-    setShowContent(true);
-  } else {
-    // Premier chargement - afficher l'écran de chargement
-    const interval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setTimeout(() => {
-            setLoading(false);
-            sessionStorage.setItem('hasSeenLoading', 'true');
-            setTimeout(() => setShowContent(true), 100);
-          }, 500);
-          return 100;
-        }
-        return prev + Math.random() * 15;
+  // ✅ VISUAL ALBUMS
+  const fetchVisualAlbums = async () => {
+    try {
+      console.log('🔄 Chargement Visual Albums...');
+      const response = await fetch(`${API_BASE_URL}/api/public/visual-albums`);
+      
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      
+      const data = await response.json();
+      console.log('✅ Albums chargés:', data);
+      
+      if (data.success) {
+        setVisualAlbums(data.albums || []);
+      }
+    } catch (error) {
+      console.error('❌ Erreur Albums:', error);
+      setVisualAlbums([]);
+    } finally {
+      setLoadingVisualAlbums(false);
+    }
+  };
+
+  // ✅ LOGOS
+  const fetchPartnerLogos = async () => {
+    try {
+      console.log('🔄 Chargement Logos...');
+      const response = await fetch(`${API_BASE_URL}/api/partner-logos`);
+      
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      
+      const data = await response.json();
+      console.log('✅ Logos chargés:', data);
+      
+      if (data.success) {
+        setPartnerLogos(data.logos || []);
+      }
+    } catch (error) {
+      console.error('❌ Erreur Logos:', error);
+      setPartnerLogos([]);
+    } finally {
+      setLogosLoading(false);
+    }
+  };
+
+  // ✅ FORMULAIRE DE CONTACT
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log('🔄 Soumission formulaire...');
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/contact/send`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
-    }, 200);
 
-    return () => clearInterval(interval);
-  }
-}, []);
+      const data = await response.json();
 
-
-
-    useEffect(() => {
-      let listener;
-      if (window.innerWidth > 640 && scrollbarRef.current) {
-        // Desktop: use Smooth Scrollbar
-        const instance = scrollbarRef.current;
-        listener = ({ offset }) => setScrollY(offset.y);
-        instance.addListener(listener);
-        setScrollY(instance.offset.y);
-        return () => instance.removeListener(listener);
+      if (data.success) {
+        toast.success('✅ Message envoyé avec succès !');
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          phone: '',
+          service: '',
+          message: ''
+        });
       } else {
-        // Mobile: use native scroll
-        const handleScroll = () => setScrollY(window.scrollY);
-        window.addEventListener('scroll', handleScroll);
-        setScrollY(window.scrollY);
-        return () => window.removeEventListener('scroll', handleScroll);
+        toast.error(data.message || '❌ Erreur d\'envoi');
       }
-    }, []);
-
-    // Helper to get container height for triggers
-    const container = typeof window !== 'undefined' ? document.getElementById('scroll-container') : null;
-    const containerHeight = container ? container.clientHeight : window.innerHeight;
-
-    function handleCubeMouseDown(e) {
-      setDraggingCube(true);
-      lastCubePos.current = { x: e.clientX, y: e.clientY };
+    } catch (error) {
+      console.error('❌ Erreur:', error);
+      toast.error('❌ Erreur de connexion au serveur');
+    } finally {
+      setIsSubmitting(false);
     }
+  };
 
-    function handleCubeMouseMove(e) {
-      if (!draggingCube) return;
-      const dx = e.clientX - lastCubePos.current.x;
-      const dy = e.clientY - lastCubePos.current.y;
-      setCubeRotation(r => ({ x: r.x + dy * 0.7, y: r.y + dx * 0.7 }));
-      lastCubePos.current = { x: e.clientX, y: e.clientY };
-    }
+  // ✅ CHARGEMENT INITIAL
+  useEffect(() => {
+    console.log('🏁 Chargement des données...');
+    fetchDesigns();
+    fetchVijingProjects();
+    fetchPartnerLogos();
+    fetchVisualAlbums();
+  }, []);
 
-    function handleCubeMouseUp() {
-      setDraggingCube(false);
+  // ==================== SCROLL ====================
+  useEffect(() => {
+    let listener;
+    if (window.innerWidth > 640 && scrollbarRef.current) {
+      const instance = scrollbarRef.current;
+      listener = ({ offset }) => setScrollY(offset.y);
+      instance.addListener(listener);
+      setScrollY(instance.offset.y);
+      return () => instance.removeListener(listener);
+    } else {
+      const handleScroll = () => setScrollY(window.scrollY);
+      window.addEventListener('scroll', handleScroll);
+      setScrollY(window.scrollY);
+      return () => window.removeEventListener('scroll', handleScroll);
     }
+  }, []);
+
+  const container = typeof window !== 'undefined' ? document.getElementById('scroll-container') : null;
+  const containerHeight = container ? container.clientHeight : window.innerHeight;
+
+  // ==================== CUBE 3D ====================
+  function handleCubeMouseDown(e) {
+    setDraggingCube(true);
+    lastCubePos.current = { x: e.clientX, y: e.clientY };
+  }
+
+  function handleCubeMouseMove(e) {
+    if (!draggingCube) return;
+    const dx = e.clientX - lastCubePos.current.x;
+    const dy = e.clientY - lastCubePos.current.y;
+    setCubeRotation(r => ({ x: r.x + dy * 0.7, y: r.y + dx * 0.7 }));
+    lastCubePos.current = { x: e.clientX, y: e.clientY };
+  }
+
+  function handleCubeMouseUp() {
+    setDraggingCube(false);
+  }
 
   const handleCubeMouseEnter = () => {
-    // Animation automatique au survol
-    setCubeRotation(r => ({ 
-      x: r.x + 180, 
-      y: r.y + 180 
-    }));
+    setCubeRotation(r => ({ x: r.x + 180, y: r.y + 180 }));
   };
 
-  // Réinitialiser l'état de chargement quand on quitte la page
-useEffect(() => {
-  const handleBeforeUnload = () => {
-    sessionStorage.removeItem('hasSeenLoading');
-  };
+  useEffect(() => {
+    if (draggingCube) {
+      window.addEventListener('mousemove', handleCubeMouseMove);
+      window.addEventListener('mouseup', handleCubeMouseUp);
+      return () => {
+        window.removeEventListener('mousemove', handleCubeMouseMove);
+        window.removeEventListener('mouseup', handleCubeMouseUp);
+      };
+    }
+  }, [draggingCube]);
 
-  window.addEventListener('beforeunload', handleBeforeUnload);
-  
-  return () => {
-    window.removeEventListener('beforeunload', handleBeforeUnload);
-  };
-}, []);
-
-  // Ajouter cet useEffect
   useEffect(() => {
     const interval = setInterval(() => {
-      setCubeRotation(r => ({
-        x: r.x + 0.5,
-        y: r.y + 0.5
-      }));
+      setCubeRotation(r => ({ x: r.x + 0.5, y: r.y + 0.5 }));
     }, 50);
-
     return () => clearInterval(interval);
   }, []);
 
-    useEffect(() => {
-  if (draggingCube) {
-    window.addEventListener('mousemove', handleCubeMouseMove);
-    window.addEventListener('mouseup', handleCubeMouseUp);
+  function handleClickBox() {
+    setClickGlow(g => !g);
+  }
+
+  // ==================== LOADING SCREEN ====================
+  useEffect(() => {
+    const hasSeenLoading = sessionStorage.getItem('hasSeenLoading');
     
-    return () => {
-      window.removeEventListener('mousemove', handleCubeMouseMove);
-      window.removeEventListener('mouseup', handleCubeMouseUp);
+    if (hasSeenLoading === 'true') {
+      setLoading(false);
+      setShowContent(true);
+    } else {
+      const interval = setInterval(() => {
+        setProgress(prev => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+              setLoading(false);
+              sessionStorage.setItem('hasSeenLoading', 'true');
+              setTimeout(() => setShowContent(true), 100);
+            }, 500);
+            return 100;
+          }
+          return prev + Math.random() * 15;
+        });
+      }, 200);
+      return () => clearInterval(interval);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      sessionStorage.removeItem('hasSeenLoading');
     };
-  }
-}, [draggingCube]);
-
-    function handleClickBox() {
-      setClickGlow(g => !g);
-    }
-
-    // Réinitialiser l'état de chargement quand on quitte la page
-useEffect(() => {
-  const handleBeforeUnload = () => {
-    sessionStorage.removeItem('hasSeenLoading');
-  };
-
-  window.addEventListener('beforeunload', handleBeforeUnload);
-  
-  return () => {
-    window.removeEventListener('beforeunload', handleBeforeUnload);
-  };
-}, []);
-
-useEffect(() => {
-  fetchPartnerLogos();
-}, []);
-
-const fetchPartnerLogos = async () => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/partner-logos`);
-    
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    
-    const data = await response.json();
-    
-    if (data.success) {
-      setPartnerLogos(data.logos || []);
-    }
-  } catch (error) {
-    console.error('❌ Erreur Logos:', error);
-    setPartnerLogos([]);
-  }
-};
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, []);
 
   if (loading) {
   return (

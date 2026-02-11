@@ -21,7 +21,9 @@ import {
 } from 'react-icons/fi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import API_BASE_URL from '../config/api';
 import { useParams, useLocation } from 'react-router-dom';
+
 
 
 const FileDownload = () => {
@@ -38,7 +40,6 @@ const FileDownload = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // ✅ FIXED: Remove /api from base URL since we add it in each API call
-  const API_BASE_URL = process.env.REACT_APP_API_URL ;
   
 
   // Extract ID from link

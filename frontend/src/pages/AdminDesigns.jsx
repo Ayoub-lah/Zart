@@ -37,6 +37,8 @@ import {
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminHeader from '../components/AdminHeader';
+import API_BASE_URL from '../config/api';
+
 
 const AdminDesigns = () => {
   const navigate = useNavigate();
@@ -69,7 +71,6 @@ const AdminDesigns = () => {
   const [editMode, setEditMode] = useState(false);
   const [editingDesign, setEditingDesign] = useState(null);
 
-  const API_BASE_URL = process.env.REACT_APP_API_URL ;
 
   // Catégories avec icônes
   const categories = [

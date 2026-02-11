@@ -15,6 +15,8 @@ import {
 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import AdminHeader from '../components/AdminHeader';
+import API_BASE_URL from '../config/api';
+
 
 const AdminVijingMapping = () => {
   const navigate = useNavigate();
@@ -50,7 +52,6 @@ const AdminVijingMapping = () => {
     'Festival Visuals'
   ];
 
-  const API_BASE_URL = process.env.REACT_APP_API_URL;
 
   // Vérifier l'authentification - MÊME LOGIQUE QUE AdminLogos
   useEffect(() => {

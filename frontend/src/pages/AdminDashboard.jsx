@@ -43,6 +43,8 @@ import {
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminHeader from '../components/AdminHeader';
+import API_BASE_URL from '../config/api';
+
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -120,7 +122,6 @@ const AdminDashboard = () => {
     }
   ]);
 
-  const API_BASE_URL = process.env.REACT_APP_API_URL;
 
   // Vérifier l'authentification
   useEffect(() => {

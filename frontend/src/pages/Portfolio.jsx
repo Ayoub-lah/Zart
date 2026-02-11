@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from '../components/Header';
+import API_BASE_URL from '../config/api';
 import Footer from '../components/Footer';
 
 const Portfolio = () => {
@@ -31,8 +32,7 @@ const Portfolio = () => {
   const searchInputRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
 
-  // URLs API
-  const API_BASE_URL = process.env.REACT_APP_API_URL ;
+  // 
 
   // Détecter la taille de l'écran pour mobile
   useEffect(() => {

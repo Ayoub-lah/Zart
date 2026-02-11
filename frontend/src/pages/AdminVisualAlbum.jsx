@@ -44,6 +44,8 @@ import {
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminHeader from '../components/AdminHeader';
+import API_BASE_URL from '../config/api';
+
 
 const AdminVisualAlbum = () => {
   const navigate = useNavigate();
@@ -78,8 +80,6 @@ const AdminVisualAlbum = () => {
   const [albumFiles, setAlbumFiles] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [editingAlbum, setEditingAlbum] = useState(null);
-
-  const API_BASE_URL = process.env.REACT_APP_API_URL;
 
   // Types d'albums avec icônes
   const albumTypeOptions = [

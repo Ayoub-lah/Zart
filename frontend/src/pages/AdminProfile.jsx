@@ -16,6 +16,8 @@ import {
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminHeader from '../components/AdminHeader';
+import API_BASE_URL from '../config/api';
+
 
 const AdminProfile = () => {
   const navigate = useNavigate();
@@ -38,7 +40,6 @@ const AdminProfile = () => {
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
 
-  const API_BASE_URL = process.env.REACT_APP_API_URL;
 
   // Vérifier l'authentification et charger le profil
   useEffect(() => {
