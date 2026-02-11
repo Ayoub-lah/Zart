@@ -1,0 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes scroll-strip {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-scroll-strip {
+  animation: scroll-strip 20s linear infinite;
+}
+
+.icon-glow {
+  position: relative;
+}
+.icon-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.icon-glow:hover::before {
+  opacity: 1;
+  background: radial-gradient(circle, rgba(168,85,247,0.25) 0%, rgba(168,85,247,0) 70%);
+}
+
+@keyframes spin-slow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 2s linear infinite;
+}
+
+.grow-on-hover {
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+div.group:hover .grow-on-hover {
+  transform: scale(1.25);
+}
+
+.cube3d {
+  width: 48px;
+  height: 48px;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(-20deg) rotateY(30deg);
+  transition: box-shadow 0.2s;
+}
+.cube3d .face {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  background: #222;
+  border: 2px solid #444;
+  opacity: 0.95;
+}
+.cube3d .front  { transform: translateZ(24px); background: #444; }
+.cube3d .back   { transform: rotateY(180deg) translateZ(24px); background: #333; }
+.cube3d .right  { transform: rotateY(90deg) translateZ(24px); background: #555; }
+.cube3d .left   { transform: rotateY(-90deg) translateZ(24px); background: #666; }
+.cube3d .top    { transform: rotateX(90deg) translateZ(24px); background: #888; }
+.cube3d .bottom { transform: rotateX(-90deg) translateZ(24px); background: #111; }
+
+@media (max-width: 640px) {
+  .scrollbar-track,
+  .scrollbar-track-x,
+  .scrollbar-track-y,
+  .scrollbar-thumb,
+  .scrollbar-thumb-x,
+  .scrollbar-thumb-y,
+  .scrollbar-track > *,
+  .scrollbar-thumb > * {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+}
+
+/* Styles pour FileUpload */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Scrollbar personnalisé */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #7C3AED, #DB2777);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #8B5CF6, #EC4899);
+}
+
+/* Effets de glow */
+.glow-effect {
+  position: relative;
+}
+
+.glow-effect::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, #3B82F6, #8B5CF6, #EC4899);
+  border-radius: inherit;
+  z-index: -1;
+  filter: blur(10px);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.glow-effect:hover::after {
+  opacity: 0.5;
+}
+
+/* Animation de chargement */
+.loading-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.loading-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.loading-dots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% { 
+    transform: scale(0);
+  } 
+  40% { 
+    transform: scale(1.0);
+  }
+}

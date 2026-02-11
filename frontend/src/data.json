@@ -1,0 +1,241 @@
+{
+  "aboutImages": {
+    "row1": [
+      "https://picsum.photos/128/128?random=1&blur=3",
+      "https://picsum.photos/128/128?random=2&blur=3",
+      "https://picsum.photos/128/128?random=3&blur=3",
+      "https://picsum.photos/128/128?random=4&blur=3",
+      "https://picsum.photos/128/128?random=5&blur=3",
+      "https://picsum.photos/128/128?random=6&blur=3"
+    ],
+    "row2": [
+      "https://picsum.photos/128/128?random=7&blur=3",
+      "https://picsum.photos/128/128?random=8&blur=3",
+      "https://picsum.photos/128/128?random=9&blur=3",
+      "https://picsum.photos/128/128?random=10&blur=3",
+      "https://picsum.photos/128/128?random=11&blur=3",
+      "https://picsum.photos/128/128?random=12&blur=3"
+    ],
+    "row3": [
+      "https://picsum.photos/128/128?random=13&blur=3",
+      "https://picsum.photos/128/128?random=14&blur=3",
+      "https://picsum.photos/128/128?random=15&blur=3",
+      "https://picsum.photos/128/128?random=16&blur=3",
+      "https://picsum.photos/128/128?random=17&blur=3",
+      "https://picsum.photos/128/128?random=18&blur=3"
+    ]
+  },
+  "posters": [
+    {
+      "title": "Cherish Snaps",
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)"
+    },
+    {
+      "title": "BRIDGEKRIT",
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)"
+    },
+    {
+      "title": "AB-INITIO",
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)"
+    },
+    {
+      "title": "SAE SUPRA",
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)"
+    }
+  ],
+  "banners": [
+    {
+      "title": "FLASH",
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)"
+    },
+    {
+      "title": "ROBO WAR",
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)"
+    },
+    {
+      "title": "TECHSRIJAN'23",
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)"
+    },
+    {
+      "title": "AB-INITIO",
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)"
+    }
+  ],
+  "brochures": [
+    { 
+      "title": "Travel Brochure", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)" 
+    },
+    { 
+      "title": "Event Flyer", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)" 
+    },
+    { 
+      "title": "Product Catalog", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)" 
+    },
+    { 
+      "title": "Conference Leaflet", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)" 
+    }
+  ],
+  "posts": [
+    { 
+      "title": "Instagram Post", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)" 
+    },
+    { 
+      "title": "Facebook Ad", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)" 
+    },
+    { 
+      "title": "LinkedIn Banner", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)" 
+    },
+    { 
+      "title": "Twitter Graphic", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)" 
+    }
+  ],
+  "logos": [
+    { 
+      "title": "Minimal Logo", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)" 
+    },
+    { 
+      "title": "Vintage Logo", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)" 
+    },
+    { 
+      "title": "Modern Logo", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)" 
+    },
+    { 
+      "title": "Monogram Logo", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)" 
+    }
+  ],
+  "brands": [
+    { 
+      "title": "Brand Book", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)" 
+    },
+    { 
+      "title": "Style Guide", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)" 
+    },
+    { 
+      "title": "Typography Guide", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)" 
+    },
+    { 
+      "title": "Color Palette", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)" 
+    }
+  ],
+  "videos": [
+    {
+      "title": "Dream Sequence Album",
+      "image": "https://api.iconify.design/mdi/lock.svg?width=400&height=400&blur=6&filter=blur(6px)"
+    },
+    {
+      "title": "Urban Echoes Album", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=400&height=400&blur=6&filter=blur(6px)"
+    },
+    {
+      "title": "Product Demo",
+      "image": "https://api.iconify.design/mdi/lock.svg?width=400&height=400&blur=6&filter=blur(6px)"
+    }
+  ],
+  "shorts": [
+    { 
+      "title": "Concept Sketch 1", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=200&height=355&blur=4&filter=blur(4px)"
+    },
+    { 
+      "title": "Concept Sketch 2", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=200&height=355&blur=4&filter=blur(4px)"
+    },
+    { 
+      "title": "Concept Sketch 3", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=200&height=355&blur=4&filter=blur(4px)"
+    },
+    { 
+      "title": "Concept Sketch 4", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=200&height=355&blur=4&filter=blur(4px)"
+    },
+    { 
+      "title": "Concept Sketch 5", 
+      "image": "https://api.iconify.design/mdi/lock.svg?width=200&height=355&blur=4&filter=blur(4px)"
+    }
+  ],
+  "services": [
+    {
+      "title": "Business Cards & Design",
+      "icon": "FiCreditCard",
+      "links": [
+        { "label": "Packaging", "icon": "FiPackage" },
+        { "label": "Brand Guidelines", "icon": "FiBook" },
+        { "label": "Logo", "icon": "FiAward" },
+        { "label": "Post", "icon": "FiShare2" },
+        { "label": "Brochure & Flyers", "icon": "FiFileText" },
+        { "label": "Banners", "icon": "FiFlag" },
+        { "label": "Posters", "icon": "FiImage" }
+      ]
+    },
+    {
+      "title": "Video Jockey",
+      "icon": "FiMonitor",
+      "links": [
+        { "label": "VJing", "icon": "FiBookOpen" },
+        { "label": "Projection mapping", "icon": "FiBriefcase" }
+      ]
+    },
+    {
+      "title": "Video Editing",
+      "icon": "FiFilm",
+      "links": [
+        { "label": "YouTube Edits", "icon": "FiYoutube" },
+        { "label": "Shorts", "icon": "FiVideo" },
+        { "label": "Reels", "icon": "FiPlay" }
+      ]
+    },
+    {
+      "title": "ALL Tools",
+      "icon": "FiCpu",
+      "links": [
+        { "label": "ChatGPT", "icon": "FiMessageCircle" },
+        { "label": "Midjourney", "icon": "FiImage" },
+        { "label": "Nano Banana", "icon": "FiZap" },
+        { "label": "Gemini", "icon": "FiStar" },
+        { "label": "Veo", "icon": "FiVideo" }
+      ]
+    }
+  ],
+  "vjingProjects": [
+    {
+      "name": "Electric Festival 2024",
+      "venue": "Stadium Arena",
+      "type": "Live VJing",
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)"
+    },
+    {
+      "name": "Building Projection",
+      "venue": "City Center",
+      "type": "Video Mapping",
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)"
+    },
+    {
+      "name": "Concert Visuals",
+      "venue": "Music Hall",
+      "type": "Stage Design",
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)"
+    },
+    {
+      "name": "Art Installation",
+      "venue": "Gallery Space",
+      "type": "Interactive",
+      "image": "https://api.iconify.design/mdi/lock.svg?width=160&height=90&blur=5&filter=blur(5px)"
+    }
+  ]
+}

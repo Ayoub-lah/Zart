@@ -1,0 +1,123 @@
+{
+  "posters": [
+    {
+      "id": "17702525012510",
+      "title": "fdghj",
+      "description": "fghj,",
+      "image": "http://localhost:5000/uploads/designs/1770252501246-757970416_photo1.png",
+      "originalName": "photo1.png",
+      "filename": "1770252501246-757970416_photo1.png",
+      "path": "uploads\\designs\\1770252501246-757970416_photo1.png",
+      "size": 531663,
+      "mimetype": "image/png",
+      "category": "posters",
+      "link": null,
+      "uploadedBy": "1",
+      "uploadedAt": "2026-02-05T00:48:21.251Z",
+      "order": 1
+    },
+    {
+      "id": "17702545076500fwu6dqxee",
+      "title": "zretyu",
+      "description": "esrtdyju",
+      "image": "http://localhost:5000/uploads/designs/1770254507645-606372731_aboutMobile.png",
+      "originalName": "aboutMobile.png",
+      "filename": "1770254507645-606372731_aboutMobile.png",
+      "path": "uploads\\designs\\1770254507645-606372731_aboutMobile.png",
+      "size": 51067,
+      "mimetype": "image/png",
+      "category": "posters",
+      "link": null,
+      "uploadedBy": "1",
+      "uploadedAt": "2026-02-05T01:21:47.650Z",
+      "order": 2
+    },
+    {
+      "id": "177029593195503kh5f4ghu",
+      "title": "fesgh",
+      "description": "ertghj",
+      "image": "http://localhost:5000/uploads/designs/1770295931952-611945338_1770215827955-950815047_logo6.png",
+      "originalName": "1770215827955-950815047_logo6.png",
+      "filename": "1770295931952-611945338_1770215827955-950815047_logo6.png",
+      "path": "uploads\\designs\\1770295931952-611945338_1770215827955-950815047_logo6.png",
+      "size": 305979,
+      "mimetype": "image/png",
+      "category": "posters",
+      "link": null,
+      "uploadedBy": "1",
+      "uploadedAt": "2026-02-05T12:52:11.955Z",
+      "order": 2
+    },
+    {
+      "id": "17703071905070cjs7hrrtm",
+      "title": "retdyhjgk",
+      "description": "retyfhjgk",
+      "image": "http://localhost:5000/uploads/designs/1770307190500-426521735_1770215675220-767691144_logo2.png",
+      "originalName": "1770215675220-767691144_logo2.png",
+      "filename": "1770307190500-426521735_1770215675220-767691144_logo2.png",
+      "path": "uploads\\designs\\1770307190500-426521735_1770215675220-767691144_logo2.png",
+      "size": 104311,
+      "mimetype": "image/png",
+      "category": "posters",
+      "link": null,
+      "uploadedBy": "1",
+      "uploadedAt": "2026-02-05T15:59:50.507Z",
+      "order": 3
+    },
+    {
+      "id": "17704235676680jx0qg8u6a",
+      "title": "sfdgtryujhkl",
+      "description": "swdfxgchjbk",
+      "image": "http://localhost:5000/uploads/designs/1770423567664-308292322_1770216380136-376345776_logo14.png",
+      "originalName": "1770216380136-376345776_logo14.png",
+      "filename": "1770423567664-308292322_1770216380136-376345776_logo14.png",
+      "path": "uploads\\designs\\1770423567664-308292322_1770216380136-376345776_logo14.png",
+      "size": 63087,
+      "mimetype": "image/png",
+      "category": "posters",
+      "link": null,
+      "uploadedBy": "1",
+      "uploadedAt": "2026-02-07T00:19:27.668Z",
+      "order": 4
+    }
+  ],
+  "banners": [],
+  "brochures": [],
+  "posts": [
+    {
+      "id": "17702495542500",
+      "title": "zaretyj",
+      "description": "ertyj",
+      "image": "http://localhost:5000/uploads/designs/1770249554246-904521128_aboutMo.png",
+      "originalName": "aboutMo.png",
+      "filename": "1770249554246-904521128_aboutMo.png",
+      "path": "uploads\\designs\\1770249554246-904521128_aboutMo.png",
+      "size": 504014,
+      "mimetype": "image/png",
+      "category": "posts",
+      "link": null,
+      "uploadedBy": "1",
+      "uploadedAt": "2026-02-04T23:59:14.250Z",
+      "order": 0
+    }
+  ],
+  "logos": [
+    {
+      "id": "17702487254840",
+      "title": "drtfhygjk",
+      "description": "rsetdyujgk",
+      "image": "http://localhost:5000/uploads/designs/1770248725479-828072304_Z.png",
+      "originalName": "Z.png",
+      "filename": "1770248725479-828072304_Z.png",
+      "path": "uploads\\designs\\1770248725479-828072304_Z.png",
+      "size": 27253,
+      "mimetype": "image/png",
+      "category": "logos",
+      "link": null,
+      "uploadedBy": "1",
+      "uploadedAt": "2026-02-04T23:45:25.484Z",
+      "order": 0
+    }
+  ],
+  "brands": []
+}

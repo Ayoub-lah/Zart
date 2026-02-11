@@ -1,0 +1,109 @@
+# MON-PORTFOLIO/.htaccess
+Options -Indexes
+Options +FollowSymLinks
+RewriteEngine On
+
+# Redirection HTTP vers HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# Redirection www vers non-www (ou inversement)
+RewriteCond %{HTTP_HOST} ^www\.zartissam\.com [NC]
+RewriteRule ^(.*)$ https://zartissam.com/$1 [R=301,L]
+
+# Protection des fichiers sensibles
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "\.(env|log|md|sql|bak|old)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Compression GZIP
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json application/xml
+    AddOutputFilterByType DEFLATE application/x-font-ttf application/x-font-opentype image/svg+xml
+</IfModule>
+
+# Cache des fichiers statiques
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Images
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+    
+    # CSS, JavaScript
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    
+    # Fonts
+    ExpiresByType application/vnd.ms-fontobject "access plus 1 year"
+    ExpiresByType application/x-font-ttf "access plus 1 year"
+    ExpiresByType application/x-font-opentype "access plus 1 year"
+    ExpiresByType application/x-font-woff "access plus 1 year"
+    ExpiresByType font/opentype "access plus 1 year"
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    
+    # Autres
+    ExpiresByType application/pdf "access plus 1 month"
+    ExpiresByType application/x-shockwave-flash "access plus 1 month"
+</IfModule>
+
+# Headers de sécurité
+<IfModule mod_headers.c>
+    # HSTS
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    
+    # XSS Protection
+    Header set X-XSS-Protection "1; mode=block"
+    
+    # MIME type sniffing protection
+    Header set X-Content-Type-Options "nosniff"
+    
+    # Clickjacking protection
+    Header set X-Frame-Options "SAMEORIGIN"
+    
+    # Referrer Policy
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Permissions Policy
+    Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>
+
+# Routage pour React SPA
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/api
+RewriteCond %{REQUEST_URI} !^/uploads
+RewriteRule ^ index.html [QSA,L]
+
+# Protection du dossier uploads
+<Directory "/uploads">
+    Options -Indexes
+    Order deny,allow
+    Deny from all
+    
+    # Autoriser l'accès aux fichiers uniquement via le serveur
+    <FilesMatch "\.(jpg|jpeg|png|gif|pdf|mp4|mov|avi|zip|rar)$">
+        Order allow,deny
+        Allow from all
+    </FilesMatch>
+</Directory>
+
+# Limite de taille pour les uploads
+php_value upload_max_filesize 500M
+php_value post_max_size 500M
+php_value max_execution_time 300
+php_value max_input_time 300
