@@ -13,6 +13,7 @@ const AdminLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  console.log('🚀 AdminLogin.jsx est bien chargé !');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
