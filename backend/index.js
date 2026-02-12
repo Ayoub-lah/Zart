@@ -1,5 +1,3 @@
-// backend/index.js - VERSION CORRIGÉE COMPLÈTE
-
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -13,53 +11,43 @@ const adminRoutes = require('./routes/admin');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ✅ SOLUTION 1 : CORS OUVERT POUR TOUT (RECOMMANDÉ POUR DÉPANNAGE)
+// ✅ UNE SEULE CONFIGURATION CORS - COMPLÈTE ET PROPRE
+const allowedOrigins = [
+  'https://zartissam.com',
+  'https://www.zartissam.com',
+  'http://localhost:3000'
+];
+
 app.use(cors({
-  origin: '*',  // ← ACCEPTE TOUTES LES ORIGINES
+  origin: function(origin, callback) {
+    // Permettre les requêtes sans origin (Postman, curl)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1 || origin === '*') {
+      callback(null, true);
+    } else {
+      console.log('🚫 Origine bloquée:', origin);
+      callback(null, false);
+    }
+  },
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-  credentials: true
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));
 
-/* 
-// ✅ SOLUTION 2 : CORS SPÉCIFIQUE (À UTILISER APRÈS)
-app.use(cors({
-  origin: [
-    'https://zartissam.com',
-    'https://www.zartissam.com',
-    'http://localhost:3000'
-  ],
-  credentials: true
-}));
-*/
-
-// ✅ MIDDLEWARE POUR LES PREFLIGHT REQUESTS
+// ✅ PREFLIGHT REQUESTS
 app.options('*', cors());
+
+// ✅ SUPPRIMEZ COMPLÈTEMENT LE MIDDLEWARE MANUEL (lignes 53-67)
+// ❌ À RETIRER : app.use((req, res, next) => { ... })
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Servir les fichiers statiques
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// ✅ MIDDLEWARE POUR AJOUTER LES HEADERS MANUELLEMENT (BACKUP)
+// ✅ MIDDLEWARE POUR NETTOYER LES DOUBLES SLASH (GARDER)
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
-  }
-  
-  next();
-});
-
-// ✅ MIDDLEWARE POUR NETTOYER LES DOUBLES SLASH
-app.use((req, res, next) => {
-  // Si l'URL commence par //, enlever un slash
   if (req.url.startsWith('//')) {
     req.url = req.url.substring(1);
     console.log(`🔄 URL corrigée: ${req.url}`);
@@ -161,7 +149,8 @@ app.get('/api/health', (req, res) => {
     status: 'OK', 
     message: 'Serveur fonctionnel',
     timestamp: new Date().toISOString(),
-    cors: 'enabled',
+    cors: 'configured',
+    allowedOrigins: allowedOrigins,
     baseUrl: process.env.BASE_URL || 'https://zart.onrender.com'
   });
 });

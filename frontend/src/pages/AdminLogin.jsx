@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; // ← AJOUTEZ useEffect
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiLock, FiUser, FiEye, FiEyeOff } from 'react-icons/fi';
 import { ToastContainer, toast } from 'react-toastify';
@@ -13,15 +13,7 @@ const AdminLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-   useEffect(() => {
-    console.log('🚀 AdminLogin chargé');
-    console.log('🌐 API URL:', API_BASE_URL);
-    
-    fetch(`${API_BASE_URL}/api/health`)
-      .then(res => res.json())
-      .then(data => console.log('✅ Backend connecté:', data))
-      .catch(err => console.error('❌ Backend inaccessible:', err));
-  }, []);
+  console.log('🚀 AdminLogin.jsx est bien chargé !');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
