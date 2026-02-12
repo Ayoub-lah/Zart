@@ -42,8 +42,6 @@ function App() {
             <Route path="/admin/designs" element={<AdminDesigns />} />
             <Route path="/admin/vijing" element={<AdminVijingMapping />} />
             <Route path="/admin/visual-albums" element={<AdminVisualAlbum />} />
-
-
             
             {/* Route 404 */}
             <Route path="*" element={<div className="min-h-screen flex items-center justify-center">

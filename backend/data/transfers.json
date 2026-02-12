@@ -1,27 +1,5 @@
 [
   {
-    "id": "1770254602602lingf77pv",
-    "createdAt": "2026-02-05T01:23:22.601Z",
-    "downloadId": "22ab9efe225ee93b937159e13f22890f",
-    "files": [
-      {
-        "originalName": "AboutMe.png",
-        "filename": "1770254602600-542000842_AboutMe.png",
-        "size": 58016,
-        "path": "uploads\\files\\1770254602600-542000842_AboutMe.png",
-        "mimetype": "image/png",
-        "uploadDate": "2026-02-05T01:23:22.601Z"
-      }
-    ],
-    "accessCode": "ABB2ED",
-    "expiresAt": "2026-02-12T01:23:22.601Z",
-    "downloads": 1,
-    "maxDownloads": 50,
-    "email": null,
-    "totalSize": 58016,
-    "updatedAt": "2026-02-05T01:23:37.162Z"
-  },
-  {
     "id": "177037714038399m6tljwm",
     "createdAt": "2026-02-06T11:25:40.382Z",
     "downloadId": "76f4bd121a5cdea7c3a411d3fcca0732",
