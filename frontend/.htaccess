@@ -1,11 +1,20 @@
-# DÉSACTIVER LE CACHE POUR LE TEST
-Header set Cache-Control "no-cache, no-store, must-revalidate"
-Header set Pragma "no-cache"
-Header set Expires 0
+# DÉSACTIVER TOUT CACHE (FORCER LE SERVEUR À SERVIR LES FICHIERS FRAIS)
+<IfModule mod_headers.c>
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
+</IfModule>
 
-# REACT ROUTER
-Options -MultiViews
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ index.html [QSA,L]
+<IfModule mod_rewrite.c>
+    Options -MultiViews -Indexes
+    RewriteEngine On
+    
+    # Ne pas mettre en cache les fichiers JS/CSS
+    RewriteRule \.(js|css)$ - [E=no_cache:1]
+    Header set Cache-Control "no-cache, no-store, must-revalidate" env=no_cache
+    
+    # React Router
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.html [L]
+</IfModule>
