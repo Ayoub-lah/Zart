@@ -1,47 +1,41 @@
-// backend/contact.js
+// backend/contact.js - Version avec Hostinger
+
 const express = require('express');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 const router = express.Router();
 
-// Configuration du transporteur email
-let transporter;
-
-try {
-  // Vérifier si les variables d'environnement sont configurées
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    console.warn('⚠️  Variables d\'environnement email non configurées');
-    console.warn('   EMAIL_USER:', process.env.EMAIL_USER ? '✓' : '✗');
-    console.warn('   EMAIL_PASS:', process.env.EMAIL_PASS ? '✓' : '✗');
-  } else {
-    transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
-    
-    // Tester la connexion
-    transporter.verify((error, success) => {
-      if (error) {
-        console.error('❌ Erreur de configuration email:', error.message);
-      } else {
-        console.log('✅ Configuration email OK');
-      }
-    });
+// Configuration du transporteur pour Hostinger
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST || 'smtp.hostinger.com',
+  port: process.env.SMTP_PORT || 465,
+  secure: true, // true pour 465, false pour 587
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  },
+  tls: {
+    rejectUnauthorized: false // Important pour certains serveurs
   }
-} catch (error) {
-  console.error('❌ Erreur lors de la configuration email:', error);
-}
+});
+
+// Vérifier la connexion
+transporter.verify((error, success) => {
+  if (error) {
+    console.error('❌ Erreur de configuration email Hostinger:', error.message);
+  } else {
+    console.log('✅ Configuration email Hostinger OK - Prêt à envoyer');
+  }
+});
 
 // Route de test
 router.get('/test', (req, res) => {
   res.json({
     success: true,
     message: 'Contact API fonctionnelle',
-    emailConfigured: !!transporter,
+    emailConfigured: true,
+    host: process.env.SMTP_HOST || 'smtp.hostinger.com',
     timestamp: new Date().toISOString()
   });
 });
@@ -73,27 +67,12 @@ router.post('/send', async (req, res) => {
       });
     }
 
-    // Si le transporteur n'est pas configuré, retourner une erreur
-    if (!transporter) {
-      console.warn('⚠️  Transporteur email non configuré, fallback au mailto');
-      
-      const mailtoUrl = `mailto:${process.env.EMAIL_USER || 'contact@example.com'}?subject=Contact Portfolio: ${firstName}&body=Message de: ${firstName} ${lastName}%0AEmail: ${email}%0ATéléphone: ${phone || 'Non fourni'}%0AService: ${service || 'Non spécifié'}%0A%0AMessage:%0A${message}`;
-      
-      return res.json({
-        success: true,
-        message: 'Utilisez ce lien pour envoyer un email directement:',
-        fallback: true,
-        mailtoUrl: mailtoUrl,
-        data: req.body
-      });
-    }
-
     // Configuration de l'email
     const mailOptions = {
-      from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_USER,
-      replyTo: email,
-      subject: `📧 Nouveau contact portfolio: ${firstName} ${lastName}`,
+      from: `"Portfolio Zartissam" <${process.env.EMAIL_USER}>`,
+      to: process.env.EMAIL_USER, // Vous recevez l'email
+      replyTo: email, // Pour répondre directement à l'expéditeur
+      subject: `📧 Nouveau message de ${firstName} ${lastName} - Portfolio`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -135,7 +114,7 @@ router.post('/send', async (req, res) => {
             <div class="footer">
               <p>📅 Reçu le: ${new Date().toLocaleString('fr-FR')}</p>
               <p>🔗 Envoyé depuis: Portfolio Zartissam</p>
-              <p>⚠️ Ce message a été envoyé via le formulaire de contact de ton portfolio</p>
+              <p>⚠️ Ce message a été envoyé via le formulaire de contact du portfolio</p>
             </div>
           </div>
         </body>
@@ -162,7 +141,7 @@ Depuis: Portfolio Zartissam
     // Envoyer l'email
     const info = await transporter.sendMail(mailOptions);
     
-    console.log('✅ Email envoyé avec succès:', {
+    console.log('✅ Email envoyé avec succès via Hostinger:', {
       messageId: info.messageId,
       to: info.envelope.to,
       timestamp: new Date().toISOString()
@@ -170,32 +149,16 @@ Depuis: Portfolio Zartissam
 
     res.status(200).json({
       success: true,
-      message: 'Message envoyé avec succès ! Je te répondrai dans les 24h.',
-      messageId: info.messageId
+      message: 'Message envoyé avec succès ! Je te répondrai dans les 24h.'
     });
 
   } catch (error) {
     console.error('❌ Erreur lors de l\'envoi de l\'email:', error);
 
-    // Erreurs courantes et leurs solutions
-    let userMessage = 'Erreur lors de l\'envoi du message.';
-    
-    if (error.code === 'EAUTH') {
-      userMessage = 'Erreur d\'authentification email. Vérifie ta configuration.';
-    } else if (error.code === 'ESOCKET') {
-      userMessage = 'Erreur de connexion réseau.';
-    } else if (error.code === 'EENVELOPE') {
-      userMessage = 'Adresse email invalide.';
-    }
-
     res.status(500).json({
       success: false,
-      message: userMessage,
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
-      fallback: {
-        email: process.env.EMAIL_USER,
-        instructions: 'Tu peux m\'envoyer un email directement à cette adresse'
-      }
+      message: "Erreur lors de l'envoi du message.",
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
 });
@@ -203,9 +166,10 @@ Depuis: Portfolio Zartissam
 // Route pour obtenir la configuration
 router.get('/config', (req, res) => {
   res.json({
-    emailConfigured: !!transporter,
-    emailUser: process.env.EMAIL_USER ? '✓ Configuré' : '✗ Non configuré',
-    hasEmailPass: !!process.env.EMAIL_PASS,
+    emailConfigured: true,
+    host: process.env.SMTP_HOST || 'smtp.hostinger.com',
+    port: process.env.SMTP_PORT || 465,
+    user: process.env.EMAIL_USER ? '✓ Configuré' : '✗ Non configuré',
     environment: process.env.NODE_ENV || 'development',
     timestamp: new Date().toISOString()
   });
