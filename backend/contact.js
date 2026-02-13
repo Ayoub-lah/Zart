@@ -7,16 +7,14 @@ require('dotenv').config();
 const router = express.Router();
 
 // Configuration du transporteur pour Hostinger
+// Cette partie doit être présente (elle l'est probablement déjà)
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.hostinger.com',
+  host: process.env.SMTP_HOST || 'smtp.gmail.com',
   port: process.env.SMTP_PORT || 465,
-  secure: true, // true pour 465, false pour 587
+  secure: true, // true pour 465
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
-  },
-  tls: {
-    rejectUnauthorized: false // Important pour certains serveurs
   }
 });
 
