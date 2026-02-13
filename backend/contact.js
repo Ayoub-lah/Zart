@@ -9,9 +9,9 @@ const router = express.Router();
 // Configuration du transporteur pour Hostinger
 // Cette partie doit être présente (elle l'est probablement déjà)
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: process.env.SMTP_PORT || 465,
-  secure: true, // true pour 465
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  secure: process.env.SMTP_SECURE === 'true', // important !
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
@@ -21,9 +21,9 @@ const transporter = nodemailer.createTransport({
 // Vérifier la connexion
 transporter.verify((error, success) => {
   if (error) {
-    console.error('❌ Erreur de configuration email Hostinger:', error.message);
+    console.error('❌ Erreur de configuration email:', error.message);
   } else {
-    console.log('✅ Configuration email Hostinger OK - Prêt à envoyer');
+    console.log('✅ Configuration email OK - Prêt à envoyer');
   }
 });
 
