@@ -88,12 +88,15 @@ const FileUpload = () => {
   };
 
   const handleFiles = (fileList) => {
-    const validFiles = fileList.filter(file => file.size <= 100 * 1024 * 1024); // 100MB max
-    if (validFiles.length !== fileList.length) {
-      toast.error('Certains fichiers dépassent la limite de 100MB');
-    }
-    setFiles(prev => [...prev, ...validFiles]);
-  };
+  // 10GB max par fichier
+  const maxFileSize = 10 * 1024 * 1024 * 1024; // 10GB en bytes
+  
+  const validFiles = fileList.filter(file => file.size <= maxFileSize);
+  if (validFiles.length !== fileList.length) {
+    toast.error('Certains fichiers dépassent la limite de 10GB');
+  }
+  setFiles(prev => [...prev, ...validFiles]);
+};
 
   const calculateTotalSize = () => {
     return files.reduce((total, file) => total + file.size, 0);
@@ -307,7 +310,7 @@ const FileUpload = () => {
                 
                 <h3 className="text-base md:text-lg font-semibold mb-2">Glissez-déposez vos fichiers</h3>
                 <p className="text-gray-500 text-xs md:text-sm mb-4 md:mb-6 max-w-md mx-auto px-2">
-                  ou cliquez pour sélectionner (max 100MB par fichier, 500MB total)
+                   ou cliquez pour sélectionner (max 10GB par fichier, 50GB total)
                 </p>
                 
                 <button className="px-6 py-2.5 md:px-8 md:py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105 text-sm md:text-base">

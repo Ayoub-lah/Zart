@@ -38,8 +38,7 @@ app.use(cors({
 // ✅ PREFLIGHT REQUESTS
 app.options('*', cors());
 
-// ✅ SUPPRIMEZ COMPLÈTEMENT LE MIDDLEWARE MANUEL (lignes 53-67)
-// ❌ À RETIRER : app.use((req, res, next) => { ... })
+
 
 // Middleware
 app.use(express.json());
@@ -51,6 +50,18 @@ app.use((req, res, next) => {
   if (req.url.startsWith('//')) {
     req.url = req.url.substring(1);
     console.log(`🔄 URL corrigée: ${req.url}`);
+  }
+  next();
+});
+
+// backend/index.js - AJOUTER APRÈS LES AUTRES MIDDLEWARES
+
+// Middleware pour gérer les timeouts des gros fichiers
+app.use((req, res, next) => {
+  // Augmenter le timeout pour les routes d'upload
+  if (req.path.includes('/upload')) {
+    req.setTimeout(30 * 60 * 1000); // 30 minutes
+    res.setTimeout(30 * 60 * 1000); // 30 minutes
   }
   next();
 });

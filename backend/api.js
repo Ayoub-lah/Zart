@@ -27,11 +27,12 @@ const storage = multer.diskStorage({
   }
 });
 
+
 const upload = multer({ 
   storage,
   limits: { 
-    fileSize: 100 * 1024 * 1024,
-    files: 10
+    fileSize: 10 * 1024 * 1024 * 1024, // 10GB par fichier
+    files: 50 // Maximum 50 fichiers
   },
   fileFilter: (req, file, cb) => {
     cb(null, true);
@@ -51,9 +52,9 @@ router.post('/upload', upload.array('files'), (req, res) => {
       });
     }
 
-    // Vérifier la taille totale
+    // AUGMENTER LA TAILLE TOTALE À 50GB
     const totalSize = files.reduce((sum, file) => sum + file.size, 0);
-    if (totalSize > 500 * 1024 * 1024) {
+    if (totalSize > 50 * 1024 * 1024 * 1024) { // 50GB max total
       // Supprimer les fichiers uploadés
       files.forEach(file => {
         if (fs.existsSync(file.path)) {
@@ -62,7 +63,7 @@ router.post('/upload', upload.array('files'), (req, res) => {
       });
       return res.status(400).json({
         success: false,
-        error: 'La taille totale dépasse 500MB'
+        error: 'La taille totale dépasse 50GB'
       });
     }
 
